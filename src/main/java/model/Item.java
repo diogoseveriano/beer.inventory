@@ -25,13 +25,12 @@ public class Item extends AuditEntity implements Serializable {
     private String name;
 
     @ManyToOne
-    private Supplier supplier;
-
-    @ManyToOne
     //e.g. Cereal, Beer, Keg, etc.
     private ItemCategory category;
 
     private InventoryType inventoryType;
+
+    private String brand;
 
     private String description;
 

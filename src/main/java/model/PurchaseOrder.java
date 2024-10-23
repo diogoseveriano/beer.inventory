@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -24,19 +25,21 @@ public class PurchaseOrder extends AuditEntity implements Serializable {
     @Column(unique = true, nullable = false)
     private String purchaseOrderReference;
 
-    private String storeName;
+    private String notes;
 
-    private String storeAddress;
+    @ManyToOne
+    private Supplier supplier;
 
-    private String storePostalCode;
+    private BigDecimal totalPrice;
 
-    private String storeCity;
+    private BigDecimal vatAmount;
 
-    private String storeCountry;
-
-    private String storeNif;
+    // e.g. 23%
+    private BigDecimal vatPercentage;
 
     private Date purchaseDate;
+
+    private Date dateReceived;
 
     private OrderStatus orderStatus;
 

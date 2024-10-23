@@ -28,6 +28,9 @@ public class PurchaseOrderItem extends AuditEntity implements Serializable {
     @Column(nullable = false)
     private int quantity;
 
+    @ManyToOne
+    private Unit unit;
+
     @Column(nullable = false)
     private BigDecimal unitPrice;
 

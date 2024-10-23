@@ -10,7 +10,7 @@ values (true, now(), 2, now(), 'script', 'Garrafas 33CL', 'script', 'Garrafas');
 insert into itemcategory (isactive, createddate, id, modifieddate, createdby, description, modifiedby, name)
 values (true, now(), 3, now(), 'script', 'Barris 30L, 50L', 'script', 'Barris');
 
-insert into item (deprecated, supplier_id, inventorytype, category_id, createddate, id, modifieddate, code, createdby, description, modifiedby, name, notes)
-values (false, 1, 1, 1, now(), 1, now(), 'CEREAL_RM_PILS', 'script', '', 'script', 'MALTE PILSNER', '');
-insert into item (deprecated, supplier_id, inventorytype, category_id, createddate, id, modifieddate, code, createdby, description, modifiedby, name, notes)
-values (false, 1, 1, 1, now(), 2, now(), 'CEREAL_RM_MELAD', 'script', '', 'script', 'MALTE MELADONIN', '');
+insert into item (deprecated, brand, inventorytype, category_id, createddate, id, modifieddate, code, createdby, description, modifiedby, name, notes)
+values (false, 'Weyerman', 1, 1, now(), 1, now(), 'CEREAL_RM_PILS', 'script', '', 'script', 'MALTE PILSNER', '');
+insert into item (deprecated, brand, inventorytype, category_id, createddate, id, modifieddate, code, createdby, description, modifiedby, name, notes)
+values (false, 'Weyerman', 1, 1, now(), 2, now(), 'CEREAL_RM_MELAD', 'script', '', 'script', 'MALTE MELADONIN', '');
