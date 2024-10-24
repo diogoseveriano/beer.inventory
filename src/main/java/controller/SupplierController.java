@@ -7,7 +7,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
-import org.jboss.logging.annotations.Param;
 import records.SupplierRequest;
 import service.SupplierService;
 

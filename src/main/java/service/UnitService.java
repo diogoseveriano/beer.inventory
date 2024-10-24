@@ -23,13 +23,4 @@ public class UnitService {
         return Unit.findAll().list();
     }
 
-    public boolean exists(Integer id) {
-        return Unit.findByIdOptional(id).isPresent();
-    }
-
-    @Transactional
-    public void deleteUnitById(Integer id) {
-        Unit.findById(id).delete();
-    }
-
 }

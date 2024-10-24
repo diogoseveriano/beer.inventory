@@ -5,7 +5,6 @@ import io.smallrye.common.constraint.NotNull;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import model.Supplier;
-import model.Unit;
 import records.SupplierRequest;
 
 import java.util.List;
@@ -41,20 +40,6 @@ public class SupplierService {
 
     public List<Supplier> findAll() {
         return Supplier.findAll().list();
-    }
-
-    public boolean exists(Integer id) {
-        return Supplier.findByIdOptional(id).isPresent();
-    }
-
-    @Transactional
-    public void deleteSupplierById(Integer id) {
-        Supplier.findById(id).delete();
-    }
-
-    @Transactional
-    public void deleteSupplierByCode(String code) {
-        Supplier.find("code", code).firstResult().delete();
     }
 
 }

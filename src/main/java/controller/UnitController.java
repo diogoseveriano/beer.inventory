@@ -35,7 +35,7 @@ public class UnitController {
         return Response.ok(unitService.findAll()).build();
     }
 
-    @DELETE
+    /*@DELETE
     @Path("delete")
     @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC})
     public Response deleteUnit(@QueryParam("id") Integer id) {
@@ -44,6 +44,6 @@ public class UnitController {
 
         unitService.deleteUnitById(id);
         return Response.ok().build();
-    }
+    }*/
 
 }
