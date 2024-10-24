@@ -13,8 +13,10 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Supplier extends AuditEntity implements Serializable {
 
     @Serial

@@ -24,7 +24,7 @@ public class UnitService {
     }
 
     public boolean exists(Integer id) {
-        return Unit.find("id", id).count() > 0;
+        return Unit.findByIdOptional(id).isPresent();
     }
 
     @Transactional
