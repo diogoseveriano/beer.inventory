@@ -14,9 +14,11 @@ import java.util.List;
 @Table
 @Data
 @EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class PurchaseOrder extends AuditEntity implements Serializable {
 
     @Serial

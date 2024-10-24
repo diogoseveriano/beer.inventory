@@ -1,9 +1,7 @@
 package model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import enums.InventoryType;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serial;
@@ -17,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PurchaseOrderItem extends AuditEntity implements Serializable {
+public class Inventory extends AuditEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -25,15 +23,21 @@ public class PurchaseOrderItem extends AuditEntity implements Serializable {
     @ManyToOne
     private Item item;
 
+    private InventoryType inventoryType;
+
     @Column(nullable = false)
-    private double quantity;
+    private double quantity = 0;
+
+    private double minQuantity = 0;
+
+    private boolean alertLowStock = false;
 
     @ManyToOne
     private Unit unit;
 
     @Column(nullable = false)
-    private BigDecimal unitPrice = BigDecimal.ZERO;
+    private BigDecimal costPrice = BigDecimal.ZERO;
 
-    private String batch;
+    private String notes;
 
 }
