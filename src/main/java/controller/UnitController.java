@@ -30,13 +30,15 @@ public class UnitController {
     }
 
     @GET
+    @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
     public Response getAllUnits() {
         return Response.ok(unitService.findAll()).build();
     }
 
-    /*@DELETE
+    @DELETE
     @Path("delete")
+    @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC})
     public Response deleteUnit(@QueryParam("id") Integer id) {
         if (id == null || !unitService.exists(id))
@@ -44,6 +46,6 @@ public class UnitController {
 
         unitService.deleteUnitById(id);
         return Response.ok().build();
-    }*/
+    }
 
 }

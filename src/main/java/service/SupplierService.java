@@ -1,5 +1,6 @@
 package service;
 
+import enums.Defaults;
 import exceptions.SupplierAlreadyExists;
 import io.smallrye.common.constraint.NotNull;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,7 +33,7 @@ public class SupplierService {
                 .contactPerson(supplier.contactPerson())
                 .contactPersonEmail(supplier.contactPersonEmail())
                 .contactPersonPhone(supplier.contactPersonPhone())
-                .currency(supplier.currency() == null ? "EUR" : supplier.currency())
+                .currency(supplier.currency() == null ? Defaults.DEFAULT_CURRENCY : supplier.currency())
                 .isActive(true).build().persistAndFlush();
 
         return true;
@@ -40,6 +41,15 @@ public class SupplierService {
 
     public List<Supplier> findAll() {
         return Supplier.findAll().list();
+    }
+
+    public boolean existsById(@NotNull Integer id) {
+        return Supplier.find("id = ?1", id).count() > 0;
+    }
+
+    @Transactional
+    public void deleteSupplierById(@NotNull Integer id) {
+        Supplier.deleteById(id);
     }
 
 }

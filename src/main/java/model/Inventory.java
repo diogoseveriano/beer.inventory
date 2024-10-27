@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Inventory extends AuditEntity implements Serializable {
@@ -20,7 +22,7 @@ public class Inventory extends AuditEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Item item;
 
     private InventoryType inventoryType;
@@ -32,7 +34,7 @@ public class Inventory extends AuditEntity implements Serializable {
 
     private boolean alertLowStock = false;
 
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Unit unit;
 
     @Column(nullable = false)

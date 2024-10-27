@@ -10,7 +10,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import records.SupplierRequest;
 import service.SupplierService;
 
-@Path(value = "api/supplier")
+@Path(value = "api/suppliers")
 public class SupplierController {
 
     @Inject
@@ -30,33 +30,22 @@ public class SupplierController {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
     public Response getAllUnits() {
         return Response.ok(service.findAll()).build();
     }
 
-    /*
-    TODO: re-check the delete methods
+
     @DELETE
     @Path("delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC})
     public Response deleteSupplier(@PathParam("id") Integer id) {
-        if (id == null || !service.exists(id))
+        if (id == null || !service.existsById(id))
             return Response.status(Response.Status.NOT_FOUND).build();
 
         service.deleteSupplierById(id);
         return Response.ok().build();
     }
-
-    @DELETE
-    @Path("delete/{code}")
-    @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC})
-    public Response deleteUnit(@PathParam("code") String code) {
-        if (code == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
-
-        service.deleteSupplierByCode(code);
-        return Response.ok().build();
-    }*/
-
 }

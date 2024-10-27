@@ -23,4 +23,17 @@ public class UnitService {
         return Unit.findAll().list();
     }
 
+    public Unit findById(int id) {
+        return Unit.findById(id);
+    }
+
+    public boolean exists(int id) {
+        return Unit.find("id", id).count() > 0;
+    }
+
+    @Transactional
+    public void deleteUnitById(int id) {
+        Unit.deleteById(id);
+    }
+
 }

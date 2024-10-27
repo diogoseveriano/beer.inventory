@@ -12,6 +12,8 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Item extends AuditEntity implements Serializable {
@@ -24,7 +26,7 @@ public class Item extends AuditEntity implements Serializable {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     //e.g. Cereal, Beer, Keg, etc.
     private ItemCategory category;
 
