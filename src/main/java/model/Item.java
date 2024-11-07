@@ -1,6 +1,5 @@
 package model;
 
-import enums.InventoryType;
 import jakarta.persistence.*;
 import lombok.*;
 

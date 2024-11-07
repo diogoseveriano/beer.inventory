@@ -6,12 +6,9 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.ItemCategory;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import records.ItemCategoryRecord;
-import records.ItemRequest;
 import service.ItemCategoryService;
-import service.ItemService;
 
 @Path(value = "api/item-categories")
 public class ItemCategoryController {
