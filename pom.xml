@@ -47,10 +47,6 @@
             <artifactId>quarkus-smallrye-jwt</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.quarkiverse.vault</groupId>
-            <artifactId>quarkus-vault</artifactId>
-        </dependency>
-        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-jwt-build</artifactId>
         </dependency>

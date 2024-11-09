@@ -19,7 +19,6 @@ public class InventoryService {
 
     @Transactional
     public boolean createManualEntryOnInventory(InventoryManualRequest request) {
-
         Inventory.builder()
                 .item(itemService.findById(request.itemId()))
                 .inventoryType(request.inventoryType())
