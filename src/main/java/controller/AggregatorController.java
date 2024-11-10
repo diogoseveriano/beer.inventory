@@ -8,10 +8,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import records.StatisticCard;
 import service.AggregatorService;
-
-import java.util.List;
 
 @Path(value = "api/aggregator")
 public class AggregatorController {

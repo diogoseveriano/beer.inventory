@@ -22,6 +22,8 @@ public class Inventory extends AuditEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private Warehouse warehouse;
+
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Item item;
 
