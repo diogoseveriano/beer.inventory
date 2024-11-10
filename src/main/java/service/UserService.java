@@ -1,5 +1,6 @@
 package service;
 
+import enums.Role;
 import exceptions.LoginException;
 import io.smallrye.common.constraint.NotNull;
 import io.smallrye.jwt.build.Jwt;
@@ -13,8 +14,6 @@ import utils.PasswordUtils;
 import java.time.Duration;
 import java.util.Optional;
 
-import static enums.Role.ROLE_ADMIN;
-
 @ApplicationScoped
 public class UserService {
 
@@ -24,7 +23,7 @@ public class UserService {
         User.persist(User.builder()
                 .firstName("Diogo")
                 .lastName("XPTO")
-                .roles(ROLE_ADMIN) //split by comma if needed
+                .roles(Role.ROLE_READ_ONLY) //split by comma if needed
                 .isActive(true)
                 .email("xpto@gmail.com")
                 .password(PasswordUtils.hashPassword("12345678"))

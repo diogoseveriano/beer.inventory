@@ -1,5 +1,6 @@
 package model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -30,6 +31,9 @@ public class Warehouse extends AuditEntity implements Serializable {
     private String city;
 
     private String country;
+
+    @Column(nullable = false, name = "default_warehouse")
+    private boolean defaultWarehouse;
 
     private boolean isCustomsRegistered;
 

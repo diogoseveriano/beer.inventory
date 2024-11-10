@@ -13,6 +13,9 @@ import java.util.List;
 public class AggregatorService {
 
     @Inject
+    private WarehouseService warehouseService;
+
+    @Inject
     private InventoryService inventoryService;
 
     public List<StatisticCard> getStatistics() {
@@ -36,11 +39,23 @@ public class AggregatorService {
     }
 
     private String getTotalNumberOfItems() {
+        if (warehouseService.getDefaultWarehouse().isPresent()) {
+            return "" + inventoryService.findAll().stream().filter(inventory ->
+                    inventory.getWarehouse().equals(warehouseService.getDefaultWarehouse().get()) &&
+                    !inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT)).count();
+        }
+
         return "" + inventoryService.findAll().stream().filter(inventory ->
                 !inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT)).count();
     }
 
     private String getTotalNumberOfFinishedProducts() {
+        if (warehouseService.getDefaultWarehouse().isPresent()) {
+            return "" + inventoryService.findAll().stream().filter(inventory ->
+                    inventory.getWarehouse().equals(warehouseService.getDefaultWarehouse().get()) &&
+                    inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT)).count();
+        }
+
         return "" + inventoryService.findAll().stream().filter(inventory ->
                 inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT)).count();
     }
@@ -56,6 +71,15 @@ public class AggregatorService {
     }
 
     private String getInventoryTotalPrice() {
+        if (warehouseService.getDefaultWarehouse().isPresent()) {
+            return "" + inventoryService.findAll().stream()
+                    .filter(inventory ->
+                            inventory.getWarehouse().equals(warehouseService.getDefaultWarehouse().get()) &&
+                            !inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT))
+                    .map(Inventory::getCostPrice)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+
         return "" + inventoryService.findAll().stream()
                 .filter(inventory -> !inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT))
                 .map(Inventory::getCostPrice)
