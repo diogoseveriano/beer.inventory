@@ -1,12 +1,8 @@
 package service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import enums.Role;
 import exceptions.LoginException;
 import io.smallrye.common.constraint.NotNull;
 import io.smallrye.jwt.build.Jwt;
-import io.vertx.core.json.JsonObject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import model.User;
@@ -15,10 +11,7 @@ import records.LoginResponse;
 import utils.PasswordUtils;
 
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static enums.Role.ROLE_ADMIN;
 
