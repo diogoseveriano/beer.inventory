@@ -21,10 +21,4 @@ public class LoginController {
         return Response.ok(userService.login(loginRequest.email(), loginRequest.password())).build();
     }
 
-    @POST
-    @Path("/sample")
-    public void createSampleUser() throws Exception {
-        userService.createSampleUser();
-    }
-
 }

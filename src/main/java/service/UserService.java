@@ -17,19 +17,6 @@ import java.util.Optional;
 @ApplicationScoped
 public class UserService {
 
-    //SAMPLE USER FOR TESTING
-    @Transactional
-    public void createSampleUser() throws Exception {
-        User.persist(User.builder()
-                .firstName("Diogo")
-                .lastName("XPTO")
-                .roles(Role.ROLE_READ_ONLY) //split by comma if needed
-                .isActive(true)
-                .email("xpto@gmail.com")
-                .password(PasswordUtils.hashPassword("12345678"))
-                .build());
-    }
-
     public LoginResponse login(@NotNull String email, @NotNull String password) {
         Optional<User> user = User.find("email", email).firstResultOptional();
         if (user.isPresent()) {

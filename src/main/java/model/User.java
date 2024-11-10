@@ -22,9 +22,12 @@ public class User extends AuditEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Column(nullable = false)
     private String firstName;
+
     private String lastName;
 
+    @Column(nullable = false)
     private String roles;
 
     @Column(unique = true, nullable = false)
