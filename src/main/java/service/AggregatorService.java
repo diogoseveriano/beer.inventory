@@ -18,15 +18,21 @@ public class AggregatorService {
     @Inject
     private InventoryService inventoryService;
 
-    public List<StatisticCard> getStatistics() {
+    public List<StatisticCard> getStatisticsForInventoryPage() {
         return List.of(
-          createStatisticCard("Inventory Items", getTotalNumberOfItems(), "ri-box-1-fill", "primary", false),
+                createStatisticCard("Inventory Items", getTotalNumberOfItems(), "ri-box-1-fill", "primary", false),
+                createStatisticCard("Purchase Orders (Pendind Delivery)", getTotalNumberOfPurchaseOrdersPendingDelivery(), "ri-ship-2-line", "info", false),
+                createStatisticCard("Inventory Price", getInventoryTotalPrice(), "ri-money-euro-circle-line", "info", true),
+                createStatisticCard("Inventory Alerts", getTotalNumberOfInventoryAlerts(), "ri-alert-line", "error", false)
+        );
+    }
+
+    public List<StatisticCard> getStatisticsForStockPage() {
+        return List.of(
           createStatisticCard("Stock (Beer) Items", getTotalNumberOfFinishedProducts(), "ri-beer-line", "success", false),
-          createStatisticCard("Purchase Orders (Pendind Delivery)", getTotalNumberOfPurchaseOrdersPendingDelivery(), "ri-ship-2-line", "info", false),
-          createStatisticCard("Inventory Alerts", getTotalNumberOfInventoryAlerts(), "ri-alert-line", "error", false),
-          createStatisticCard("Inventory Price", getInventoryTotalPrice(), "ri-money-euro-circle-line", "info", true),
           createStatisticCard("Stock Price", getStockPrice(), "ri-money-euro-circle-line", "info", true),
-          createStatisticCard("Potential Profit", getPotentialProfit(), "ri-money-euro-circle-line", "warning", true)
+          createStatisticCard("Potential Profit", getPotentialProfit(), "ri-money-euro-circle-line", "warning", true),
+          createStatisticCard("Stock Alerts", getTotalNumberOfInventoryAlerts(), "ri-alert-line", "error", false)
         );
     }
 

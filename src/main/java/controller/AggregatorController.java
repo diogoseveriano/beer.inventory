@@ -17,10 +17,19 @@ public class AggregatorController {
     private AggregatorService aggregatorService;
 
     @GET
+    @Path("/inventory")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
-    public Response getStatisticsCards() {
-        return Response.ok(aggregatorService.getStatistics()).build();
+    public Response getStatisticsCardsForInventoryPage() {
+        return Response.ok(aggregatorService.getStatisticsForInventoryPage()).build();
+    }
+
+    @GET
+    @Path("/stock")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
+    public Response getStatisticsCardsForStockPage() {
+        return Response.ok(aggregatorService.getStatisticsForStockPage()).build();
     }
 
 }
