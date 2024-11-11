@@ -28,6 +28,8 @@ public class Inventory extends AuditEntity implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Item item;
 
+    private String batch;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Supplier supplier;
 
@@ -45,6 +47,8 @@ public class Inventory extends AuditEntity implements Serializable {
 
     @Column(nullable = false)
     private BigDecimal costPrice = BigDecimal.ZERO;
+
+    private BigDecimal salePrice = BigDecimal.ZERO;
 
     private String notes;
 
