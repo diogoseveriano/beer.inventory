@@ -24,6 +24,7 @@ public class InventoryService {
     @Transactional
     public boolean createManualEntryOnInventory(InventoryManualRequest request) {
         Inventory.builder()
+                .supplier(request.supplier())
                 .warehouse(request.warehouse())
                 .item(itemService.findById(request.itemId()))
                 .inventoryType(request.inventoryType())
