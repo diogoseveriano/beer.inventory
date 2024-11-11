@@ -3,7 +3,6 @@ package service;
 import enums.InventoryType;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import model.Inventory;
 import records.StatisticCard;
 
 import java.math.BigDecimal;

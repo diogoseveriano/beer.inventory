@@ -1,11 +1,9 @@
 package service;
 
-import enums.Role;
 import exceptions.LoginException;
 import io.smallrye.common.constraint.NotNull;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
 import model.User;
 import org.eclipse.microprofile.jwt.Claims;
 import records.LoginResponse;

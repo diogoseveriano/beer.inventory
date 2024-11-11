@@ -5,7 +5,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import model.Inventory;
-import model.Warehouse;
 import records.InventoryManualRequest;
 
 import java.util.List;
