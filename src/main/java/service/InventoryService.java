@@ -1,5 +1,6 @@
 package service;
 
+import enums.InventoryType;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -45,8 +46,14 @@ public class InventoryService {
         return Inventory.findAll().list();
     }
 
-    public List<Inventory> findAllByWarehouse(long warehouse) {
-        return Inventory.find("warehouse", warehouseService.getWarehouseById(warehouse)).list();
+    public List<Inventory> findInventoryByWarehouse(long warehouse) {
+        return Inventory.find("warehouse = ?1 and inventoryType <> ?2",
+                warehouseService.getWarehouseById(warehouse), InventoryType.FINISHED_PRODUCT).list();
+    }
+
+    public List<Inventory> findStockByWarehouse(long warehouse) {
+        return Inventory.find("warehouse = ?1 and inventoryType = ?2",
+                warehouseService.getWarehouseById(warehouse), InventoryType.FINISHED_PRODUCT).list();
     }
 
 }
