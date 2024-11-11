@@ -1,5 +1,7 @@
 package controller;
 
+import enums.Role;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -16,6 +18,7 @@ public class WarehouseController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
     public Response list() {
         return Response.ok(warehouseService.getWarehouseList()).build();
     }
@@ -23,6 +26,7 @@ public class WarehouseController {
     @GET
     @Path("/default")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
     public Response defaultWarehouse() {
         return Response.ok(warehouseService.getDefaultWarehouse()).build();
     }

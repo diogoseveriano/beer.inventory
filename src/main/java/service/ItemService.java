@@ -38,8 +38,8 @@ public class ItemService {
         return Item.findAll().list();
     }
 
-    public Item findById(Integer id) {
-        return Item.find("code = ?1", id).firstResult();
+    public Item  findById(Integer id) {
+        return Item.findById(id);
     }
 
 }

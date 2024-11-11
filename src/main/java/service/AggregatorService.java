@@ -74,15 +74,11 @@ public class AggregatorService {
         if (warehouseService.getDefaultWarehouse().isPresent()) {
             return "" + inventoryService.findAll().stream()
                     .filter(inventory ->
-                            inventory.getWarehouse().equals(warehouseService.getDefaultWarehouse().get()) &&
                             !inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT))
                     .map(Inventory::getCostPrice)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
 
-        return "" + inventoryService.findAll().stream()
-                .filter(inventory -> !inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT))
-                .map(Inventory::getCostPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return "0";
     }
 }
