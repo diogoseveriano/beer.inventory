@@ -17,4 +17,8 @@ public class WarehouseService {
         return Warehouse.findAll().list();
     }
 
+    public Warehouse getWarehouseById(long id) {
+        return Warehouse.findById(id);
+    }
+
 }
