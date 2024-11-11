@@ -7,6 +7,7 @@ import model.Inventory;
 import records.StatisticCard;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @ApplicationScoped
@@ -73,10 +74,12 @@ public class AggregatorService {
     private String getInventoryTotalPrice() {
         if (warehouseService.getDefaultWarehouse().isPresent()) {
             return "" + inventoryService.findAll().stream()
-                    .filter(inventory ->
-                            !inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT))
-                    .map(Inventory::getCostPrice)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+                    .filter(inventory -> !inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT))
+                    .map(inventory -> inventory.getCostPrice()
+                            .multiply(BigDecimal.valueOf(inventory.getQuantity()))
+                            .setScale(2, RoundingMode.HALF_UP))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add)
+                    .setScale(2, RoundingMode.HALF_UP);
         }
 
         return "0";
