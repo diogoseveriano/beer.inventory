@@ -6,8 +6,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
-import records.InventoryManualRequest;
 import service.InventoryService;
 
 @Path(value = "api/stock")
