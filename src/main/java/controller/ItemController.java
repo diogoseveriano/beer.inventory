@@ -17,7 +17,7 @@ public class ItemController {
     ItemService itemService;
 
     @POST
-    @Path("create")
+    @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC})
@@ -30,10 +30,19 @@ public class ItemController {
     }
 
     @GET
+    @Path("/inventory")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
-    public Response getAllItems() {
-        return Response.ok(itemService.findAll()).build();
+    public Response getAllInventoryItems() {
+        return Response.ok(itemService.findAllInventory()).build();
+    }
+
+    @GET
+    @Path("/stock")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
+    public Response getAllStockItems() {
+        return Response.ok(itemService.findAllStock()).build();
     }
 
 }

@@ -1,10 +1,12 @@
 package service;
 
+import enums.ItemType;
 import exceptions.ItemAlreadyExists;
 import io.smallrye.common.constraint.NotNull;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import model.Inventory;
 import model.Item;
 import records.ItemRequest;
 
@@ -22,6 +24,7 @@ public class ItemService {
             throw new ItemAlreadyExists(item.code());
 
         Item.builder()
+                .itemType(item.itemType())
                 .code(item.code())
                 .name(item.name())
                 .brand(item.brand())
@@ -29,13 +32,25 @@ public class ItemService {
                 .description(item.description())
                 .notes(item.notes())
                 .deprecated(item.deprecated())
+                .minQuantity(item.minQuantity())
+                .quantity(item.quantity())
+                .alertLowStock(item.alertLowStock())
                 .build().persistAndFlush();
 
         return true;
     }
 
-    public List<Item> findAll() {
-        return Item.findAll().list();
+    @Transactional
+    public void updateQuantity(Inventory inventory) {
+        inventory.getItem().setQuantity(inventory.getItem().getQuantity() + inventory.getQuantity());
+        inventory.getItem().persistAndFlush();
+    }
+
+    public List<Item> findAllInventory() {
+        return Item.find("itemType", ItemType.INVENTORY).list();
+    }
+    public List<Item> findAllStock() {
+        return Item.find("itemType", ItemType.STOCK).list();
     }
 
     public Item  findById(Integer id) {

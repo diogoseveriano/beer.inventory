@@ -36,11 +36,7 @@ public class Inventory extends AuditEntity implements Serializable {
     private InventoryType inventoryType;
 
     @Column(nullable = false)
-    private double quantity = 0;
-
-    private double minQuantity = 0;
-
-    private boolean alertLowStock = false;
+    private double quantity = 0.0;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Unit unit;

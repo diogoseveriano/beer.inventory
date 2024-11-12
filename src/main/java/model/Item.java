@@ -1,5 +1,6 @@
 package model;
 
+import enums.ItemType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,11 +30,21 @@ public class Item extends AuditEntity implements Serializable {
     //e.g. Cereal, Beer, Keg, etc.
     private ItemCategory category;
 
+    @Column(name = "item_type")
+    private ItemType itemType;
+
     private String brand;
 
     private String description;
 
     private String notes;
+
+    @Column(nullable = false)
+    private double quantity = 0;
+
+    private double minQuantity = 0;
+
+    private boolean alertLowStock = false;
 
     private boolean deprecated = false;
 

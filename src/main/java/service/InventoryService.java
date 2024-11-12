@@ -9,6 +9,8 @@ import records.InventoryManualRequest;
 
 import java.util.List;
 
+/// TODO :: CONTROLAR ENTRADAS E SAIDA DE PRODUTO ACABADO COM BATCH
+
 @ApplicationScoped
 public class InventoryService {
 
@@ -23,19 +25,22 @@ public class InventoryService {
 
     @Transactional
     public boolean createManualEntryOnInventory(InventoryManualRequest request) {
-        Inventory.builder()
+        System.out.println(request);
+
+        Inventory newEntry = Inventory.builder()
                 .salePrice(request.salePrice())
-                .supplier(request.supplier())
+                .supplier(request.supplier().id == -1 ? null : request.supplier())
                 .batch(request.batch())
                 .warehouse(request.warehouse())
                 .item(itemService.findById(request.itemId()))
                 .inventoryType(request.inventoryType())
                 .unit(unitService.findById(request.unitId()))
-                .alertLowStock(request.alertLowStock())
                 .quantity(request.quantity())
-                .minQuantity(request.minQuantity())
                 .costPrice(request.costPrice())
-                .build().persistAndFlush();
+                .build();
+
+        newEntry.persistAndFlush();
+        itemService.updateQuantity(newEntry);
 
         return true;
     }

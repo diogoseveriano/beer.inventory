@@ -43,6 +43,7 @@ public class UserService {
                         .sign())
                 .username(user.getFirstName() + " " + user.getLastName())
                 .email(user.getEmail())
+                .role(user.getRoles())
                 .build();
     }
 
