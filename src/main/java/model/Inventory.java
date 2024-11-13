@@ -7,6 +7,7 @@ import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Table
@@ -47,5 +48,8 @@ public class Inventory extends AuditEntity implements Serializable {
     private BigDecimal salePrice = BigDecimal.ZERO;
 
     private String notes;
+
+    @Column(name = "entry_date")
+    private Date entryDate;
 
 }

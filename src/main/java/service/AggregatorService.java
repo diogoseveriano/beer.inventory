@@ -41,7 +41,7 @@ public class AggregatorService {
           createStatisticCard("Stock (Beer) Items", getTotalNumberOfFinishedProducts(), "ri-beer-line", "success", false),
           createStatisticCard("Stock Price", getStockPrice(), "ri-money-euro-circle-line", "info", true),
           createStatisticCard("Potential Profit", getPotentialProfit(), "ri-money-euro-circle-line", "warning", true),
-          createStatisticCard("Stock Alerts", getTotalNumberOfInventoryAlerts(), "ri-alert-line", "error", false)
+          createStatisticCard("Stock Alerts", getTotalNumberOfStockAlerts(), "ri-alert-line", "error", false)
         );
     }
 
@@ -86,6 +86,16 @@ public class AggregatorService {
         if (warehouseService.getDefaultWarehouse().isPresent()) {
             return "" + itemService.findAllInventory().stream().filter(item ->
                 item.isAlertLowStock() && item.getQuantity() < item.getMinQuantity()
+            ).count();
+        }
+
+        return "" + 0L;
+    }
+
+    private String getTotalNumberOfStockAlerts() {
+        if (warehouseService.getDefaultWarehouse().isPresent()) {
+            return "" + itemService.findAllStock().stream().filter(item ->
+                    item.isAlertLowStock() && item.getQuantity() < item.getMinQuantity()
             ).count();
         }
 

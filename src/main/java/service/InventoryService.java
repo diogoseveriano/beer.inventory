@@ -7,7 +7,11 @@ import jakarta.transaction.Transactional;
 import model.Inventory;
 import records.InventoryManualRequest;
 
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /// TODO :: CONTROLAR ENTRADAS E SAIDA DE PRODUTO ACABADO COM BATCH
 
@@ -37,6 +41,7 @@ public class InventoryService {
                 .unit(unitService.findById(request.unitId()))
                 .quantity(request.quantity())
                 .costPrice(request.costPrice())
+                .entryDate(request.entryDate())
                 .build();
 
         newEntry.persistAndFlush();
@@ -51,9 +56,14 @@ public class InventoryService {
     }
 
     public List<Inventory> findInventoryByWarehouse(long warehouse) {
-        return Inventory.find("warehouse = ?1 and inventoryType <> ?2",
+        List<Inventory> inventoryList = Inventory.find("warehouse = ?1 and inventoryType <> ?2",
                 warehouseService.getWarehouseById(warehouse), InventoryType.FINISHED_PRODUCT).list();
+        return inventoryList.stream()
+                .sorted(Comparator.comparing(Inventory::getEntryDate))
+                .collect(Collectors.toList());
     }
+
+
 
     public List<Inventory> findStockByWarehouse(long warehouse) {
         return Inventory.find("warehouse = ?1 and inventoryType = ?2",
