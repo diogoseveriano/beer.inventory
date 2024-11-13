@@ -20,6 +20,15 @@ public class AlertService {
         return Alert.find("warehouse = ?1 and alertType = ?2 and isResolved = false", warehouse, alertType).list();
     }
 
+    @Transactional
+    public void updateAlertToResolved(String code) {
+        Optional<Alert> openAlert = getOpenAlertForGivenCode(code);
+        if (openAlert.isPresent()) {
+            openAlert.get().setResolved(true);
+            openAlert.get().persistAndFlush();
+        }
+    }
+
     /**
      * Creates a low stock alert if the minimum quantity is not met
      *
@@ -51,6 +60,10 @@ public class AlertService {
                     item.getQuantity(), item.getMinQuantity()));
             existingAlert.get().persistAndFlush();
         }
+    }
+
+    private Optional<Alert> getOpenAlertForGivenCode(String code) {
+        return Alert.find("code = ?1 and isResolved = false", code).firstResultOptional();
     }
 
 }

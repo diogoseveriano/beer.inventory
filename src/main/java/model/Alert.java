@@ -5,6 +5,7 @@ import enums.alerts.AlertTitle;
 import enums.alerts.AlertType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.*;
 
@@ -35,6 +36,7 @@ public class Alert extends AuditEntity implements Serializable {
 
     private AlertType alertType;
 
+    @ManyToOne
     private Warehouse warehouse;
 
     @Column(nullable = false)

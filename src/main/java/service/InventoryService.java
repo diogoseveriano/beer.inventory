@@ -32,7 +32,8 @@ public class InventoryService {
 
     @Transactional
     public boolean createManualEntryOnInventory(InventoryManualRequest request) {
-        System.out.println(request);
+        if (Objects.isNull(request.entryDate()))
+            throw new IllegalArgumentException("Invalid Entry Date!");
 
         Inventory newEntry = Inventory.builder()
                 .salePrice(request.salePrice())
@@ -53,6 +54,8 @@ public class InventoryService {
         //we only create alerts if the entry is to remove from the inventory
         if (request.quantity() < 0)
             alertService.createLowInventoryAlert(newEntry);
+        else if (newEntry.getItem().getQuantity() >= newEntry.getItem().getMinQuantity())
+            alertService.updateAlertToResolved(newEntry.getItem().getCode());
 
         return true;
     }
