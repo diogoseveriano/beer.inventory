@@ -1,5 +1,8 @@
 package model;
 
+import enums.alerts.AlertAction;
+import enums.alerts.AlertTitle;
+import enums.alerts.AlertType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -22,13 +25,19 @@ public class Alert extends AuditEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private String title;
+    private String code;
+
+    private AlertTitle title;
 
     private String content;
 
-    private String action;
+    private AlertAction action;
+
+    private AlertType alertType;
+
+    private Warehouse warehouse;
 
     @Column(nullable = false)
-    private boolean markedHasRead;
+    private boolean isResolved;
 
 }

@@ -2,6 +2,7 @@ package service;
 
 import enums.InventoryType;
 import enums.ItemType;
+import enums.alerts.AlertType;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import model.Inventory;
@@ -25,6 +26,9 @@ public class AggregatorService {
 
     @Inject
     private ItemService itemService;
+
+    @Inject
+    private AlertService alertService;
 
     public List<StatisticCard> getStatisticsForInventoryPage() {
         return List.of(
@@ -84,21 +88,15 @@ public class AggregatorService {
 
     private String getTotalNumberOfInventoryAlerts() {
         if (warehouseService.getDefaultWarehouse().isPresent()) {
-            return "" + itemService.findAllInventory().stream().filter(item ->
-                item.isAlertLowStock() && item.getQuantity() < item.getMinQuantity()
-            ).count();
+            return "" + (long) alertService.findAllAlertsFromWarehouse(AlertType.INVENTORY,
+                    warehouseService.getDefaultWarehouse().get()).size();
         }
 
         return "" + 0L;
     }
 
+    //#TODO :: IMPLEMENT SERVICE
     private String getTotalNumberOfStockAlerts() {
-        if (warehouseService.getDefaultWarehouse().isPresent()) {
-            return "" + itemService.findAllStock().stream().filter(item ->
-                    item.isAlertLowStock() && item.getQuantity() < item.getMinQuantity()
-            ).count();
-        }
-
         return "" + 0L;
     }
 

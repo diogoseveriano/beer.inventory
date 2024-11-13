@@ -27,6 +27,9 @@ public class InventoryService {
     @Inject
     WarehouseService warehouseService;
 
+    @Inject
+    AlertService alertService;
+
     @Transactional
     public boolean createManualEntryOnInventory(InventoryManualRequest request) {
         System.out.println(request);
@@ -46,6 +49,10 @@ public class InventoryService {
 
         newEntry.persistAndFlush();
         itemService.updateQuantity(newEntry);
+
+        //we only create alerts if the entry is to remove from the inventory
+        if (request.quantity() < 0)
+            alertService.createLowInventoryAlert(newEntry);
 
         return true;
     }
