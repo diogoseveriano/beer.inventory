@@ -1,5 +1,6 @@
 package service;
 
+import io.quarkus.cache.CacheResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import model.Unit;
@@ -19,6 +20,7 @@ public class UnitService {
         return true;
     }
 
+    @CacheResult(cacheName = "findAllUnits")
     public List<Unit> findAll() {
         return Unit.findAll().list();
     }
