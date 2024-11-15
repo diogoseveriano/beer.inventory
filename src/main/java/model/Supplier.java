@@ -61,4 +61,6 @@ public class Supplier extends AuditEntity implements Serializable {
     @Column(nullable = false)
     private boolean isActive = true;
 
+    private boolean isDummy = false;
+
 }

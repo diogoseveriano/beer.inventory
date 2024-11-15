@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public record InventoryManualRequest(Integer itemId, Supplier supplier, Warehouse warehouse,
-                                     InventoryType inventoryType, double quantity, Integer unitId,
-                                     BigDecimal costPrice, String notes, String batch, BigDecimal salePrice,
-                                     @NotNull Date entryDate) {
+                                     InventoryType inventoryType, double quantity,
+                                     BigDecimal costPrice, String notes, String batch, @NotNull Date entryDate,
+                                     BigDecimal retailPrice, BigDecimal salePrice) {
 }

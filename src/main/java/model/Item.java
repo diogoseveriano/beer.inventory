@@ -6,6 +6,8 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Table
@@ -30,6 +32,9 @@ public class Item extends AuditEntity implements Serializable {
     //e.g. Cereal, Beer, Keg, etc.
     private ItemCategory category;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Unit unit;
+
     @Column(name = "item_type")
     private ItemType itemType;
 
@@ -45,6 +50,13 @@ public class Item extends AuditEntity implements Serializable {
     private double minQuantity = 0;
 
     private boolean alertLowStock = false;
+
+    //this contains the last used cost price (merely indicative)
+    private BigDecimal indicativeCostPrice = BigDecimal.ZERO;
+
+    private BigDecimal salePrice = BigDecimal.ZERO;
+
+    private BigDecimal retailPrice = BigDecimal.ZERO;
 
     private boolean deprecated = false;
 

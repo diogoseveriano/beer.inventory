@@ -1,5 +1,6 @@
 package service;
 
+import enums.ItemType;
 import enums.alerts.AlertAction;
 import enums.alerts.AlertTitle;
 import enums.alerts.AlertType;
@@ -48,7 +49,7 @@ public class AlertService {
                     .action(AlertAction.BUY)
                     .code(item.getCode())
                     .warehouse(inventory.getWarehouse())
-                    .alertType(AlertType.INVENTORY)
+                    .alertType(item.getItemType().equals(ItemType.INVENTORY) ? AlertType.INVENTORY : AlertType.STOCK)
                     .content(String.format("Existing Quantity: %s - Minimum Quantity Set: %s",
                             item.getQuantity(), item.getMinQuantity()))
                     .isResolved(false)

@@ -32,7 +32,7 @@ public class AggregatorService {
 
     public List<StatisticCard> getStatisticsForInventoryPage() {
         return List.of(
-                createStatisticCard("Inventory Items", getTotalNumberOfItems(), "ri-box-1-fill", "primary", false),
+                createStatisticCard("Inventory Entries", getTotalNumberOfItems(), "ri-box-1-fill", "primary", false),
                 createStatisticCard("Purchase Orders (Pendind Delivery)", getTotalNumberOfPurchaseOrdersPendingDelivery(), "ri-ship-2-line", "info", false),
                 createStatisticCard("(Average) Inventory Price", getInventoryTotalPrice(), "ri-money-euro-circle-line", "primary", true),
                 createStatisticCard("Total Amount of Cereal", getTotalWeightOfCereal(), "ri-scales-line", "warning", false),
@@ -42,7 +42,7 @@ public class AggregatorService {
 
     public List<StatisticCard> getStatisticsForStockPage() {
         return List.of(
-          createStatisticCard("Stock (Beer) Items", getTotalNumberOfFinishedProducts(), "ri-beer-line", "success", false),
+          createStatisticCard("Stock Entries", getTotalNumberOfFinishedProducts(), "ri-beer-line", "success", false),
           createStatisticCard("Stock Price", getStockPrice(), "ri-money-euro-circle-line", "info", true),
           createStatisticCard("Potential Profit", getPotentialProfit(), "ri-money-euro-circle-line", "warning", true),
           createStatisticCard("Stock Alerts", getTotalNumberOfStockAlerts(), "ri-alert-line", "error", false)
@@ -95,8 +95,12 @@ public class AggregatorService {
         return "" + 0L;
     }
 
-    //#TODO :: IMPLEMENT SERVICE
     private String getTotalNumberOfStockAlerts() {
+        if (warehouseService.getDefaultWarehouse().isPresent()) {
+            return "" + (long) alertService.findAllAlertsFromWarehouse(AlertType.STOCK,
+                    warehouseService.getDefaultWarehouse().get()).size();
+        }
+
         return "" + 0L;
     }
 
@@ -104,7 +108,9 @@ public class AggregatorService {
     private String getInventoryTotalPrice() {
         if (warehouseService.getDefaultWarehouse().isPresent()) {
             // Step 1: Get all inventories from the inventory service
-            List<Inventory> allInventories = inventoryService.findAll();
+            List<Inventory> allInventories = inventoryService.findAll()
+                    .stream().filter(x -> x.getItem().getItemType().equals(ItemType.INVENTORY))
+                    .toList();
 
             // Step 2: Group positive inventory entries by item code and calculate average cost price
             Map<String, BigDecimal> itemCodeToAvgCostPrice = new HashMap<>();
@@ -166,40 +172,43 @@ public class AggregatorService {
             }
 
             // Step 5: Return the total cost of inventory
-            return totalInventoryCost.setScale(2, RoundingMode.HALF_UP).toString();
+            return totalInventoryCost.setScale(2, RoundingMode.HALF_UP).compareTo(BigDecimal.ZERO) <= 0 ?
+                    "0.00" : totalInventoryCost.setScale(2, RoundingMode.HALF_UP).toString();
         }
 
-        return "0"; // Return "0" if no default warehouse is found
+        return "0.00"; // Return "0" if no default warehouse is found
     }
 
 
     private String getStockPrice() {
         if (warehouseService.getDefaultWarehouse().isPresent()) {
-            return "" + inventoryService.findAll().stream()
+            BigDecimal amount = inventoryService.findAll().stream()
                     .filter(inventory -> inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT))
                     .map(inventory -> inventory.getCostPrice()
                             .multiply(BigDecimal.valueOf(inventory.getQuantity()))
                             .setScale(2, RoundingMode.HALF_UP))
                     .reduce(BigDecimal.ZERO, BigDecimal::add)
                     .setScale(2, RoundingMode.HALF_UP);
+            return amount.compareTo(BigDecimal.ZERO) <= 0 ? "0.00" : amount.toString();
         }
 
-        return "0";
+        return "0.00";
     }
 
     private String getPotentialProfit() {
         if (warehouseService.getDefaultWarehouse().isPresent()) {
-            return "" + inventoryService.findAll().stream()
+            BigDecimal amount = inventoryService.findAll().stream()
                     .filter(inventory -> inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT) &&
-                            inventory.getSalePrice() != null)
-                    .map(inventory -> inventory.getSalePrice()
+                            inventory.getItem().getSalePrice() != null)
+                    .map(inventory -> inventory.getItem().getSalePrice()
                             .multiply(BigDecimal.valueOf(inventory.getQuantity()))
                             .setScale(2, RoundingMode.HALF_UP))
                     .reduce(BigDecimal.ZERO, BigDecimal::add)
                     .setScale(2, RoundingMode.HALF_UP);
+            return amount.compareTo(BigDecimal.ZERO) <= 0 ? "0.00" : amount.toString();
         }
 
-        return "0";
+        return "0.00";
     }
 
     private String getTotalWeightOfCereal() {

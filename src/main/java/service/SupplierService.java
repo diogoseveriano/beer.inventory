@@ -9,6 +9,8 @@ import model.Supplier;
 import records.SupplierRequest;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class SupplierService {
@@ -34,13 +36,19 @@ public class SupplierService {
                 .contactPersonEmail(supplier.contactPersonEmail())
                 .contactPersonPhone(supplier.contactPersonPhone())
                 .currency(supplier.currency() == null ? Defaults.DEFAULT_CURRENCY : supplier.currency())
+                .isDummy(false)
                 .isActive(true).build().persistAndFlush();
 
         return true;
     }
 
     public List<Supplier> findAll() {
-        return Supplier.findAll().list();
+        return  Supplier.findAll()
+                .list()
+                .stream()
+                .map(w -> (Supplier) w)
+                .filter(w -> !w.isDummy())
+                .collect(Collectors.toList());
     }
 
     public boolean existsById(@NotNull Integer id) {
@@ -52,4 +60,21 @@ public class SupplierService {
         Supplier.deleteById(id);
     }
 
+    @Transactional
+    public Supplier getDummySupplier() {
+        Optional<Supplier> dummy = Supplier.find("isDummy", true).firstResultOptional();
+        if (dummy.isPresent())
+            return dummy.get();
+        else {
+            Supplier.builder()
+                    .code("DUMMY")
+                    .currency("EUR")
+                    .nif(-1L)
+                    .notes("DUMMY SUPPLIER FOR INTERNAL STOCK")
+                    .isDummy(true)
+                    .name("DUMMY")
+                    .build().persistAndFlush();
+            return getDummySupplier();
+        }
+    }
 }

@@ -39,17 +39,24 @@ public class Inventory extends AuditEntity implements Serializable {
     @Column(nullable = false)
     private double quantity = 0.0;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Unit unit;
-
     @Column(nullable = false)
     private BigDecimal costPrice = BigDecimal.ZERO;
-
-    private BigDecimal salePrice = BigDecimal.ZERO;
 
     private String notes;
 
     @Column(name = "entry_date")
     private Date entryDate;
 
+    // TODO PENSAR BEM NESTA TEMATICA DA VALIDADE, PORQUE SE EXPIRA DEVERIAMOS ALERTAR, PENSAR COMO!!!
+    private Date expirationDate;
+
+    @Override
+    public void setCreatedBy(String createdBy) {
+        super.setCreatedBy(createdBy);
+    }
+
+    @Override
+    public void setModifiedBy(String modifiedBy) {
+        super.setModifiedBy(modifiedBy);
+    }
 }

@@ -10,6 +10,7 @@ import model.Inventory;
 import model.Item;
 import records.ItemRequest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @ApplicationScoped
@@ -29,12 +30,15 @@ public class ItemService {
                 .name(item.name())
                 .brand(item.brand())
                 .category(itemCategoryService.findById(item.categoryId()))
+                .unit(item.unit())
                 .description(item.description())
                 .notes(item.notes())
                 .deprecated(item.deprecated())
                 .minQuantity(item.minQuantity())
                 .quantity(item.quantity())
                 .alertLowStock(item.alertLowStock())
+                .retailPrice(item.retailPrice())
+                .salePrice(item.salePrice())
                 .build().persistAndFlush();
 
         return true;
@@ -43,7 +47,18 @@ public class ItemService {
     @Transactional
     public void updateQuantity(Inventory inventory) {
         inventory.getItem().setQuantity(inventory.getItem().getQuantity() + inventory.getQuantity());
-        inventory.getItem().persistAndFlush();
+        inventory.getItem().persist();
+    }
+
+    @Transactional
+    public void updateCosts(Inventory inventory, BigDecimal retailPrice, BigDecimal salePrice) {
+        Item item = inventory.getItem();
+        if (retailPrice != null)
+            item.setRetailPrice(retailPrice);
+        if (salePrice != null)
+            item.setSalePrice(salePrice);
+        item.setIndicativeCostPrice(inventory.getCostPrice());
+        item.persist();
     }
 
     public List<Item> findAllInventory() {

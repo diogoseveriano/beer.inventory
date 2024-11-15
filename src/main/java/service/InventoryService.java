@@ -1,5 +1,6 @@
 package service;
 
+import context.UserContext;
 import enums.InventoryType;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -8,7 +9,6 @@ import model.Inventory;
 import records.InventoryManualRequest;
 
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,7 +28,13 @@ public class InventoryService {
     WarehouseService warehouseService;
 
     @Inject
+    SupplierService supplierService;
+
+    @Inject
     AlertService alertService;
+
+    @Inject
+    UserContext userContext;
 
     @Transactional
     public boolean createManualEntryOnInventory(InventoryManualRequest request) {
@@ -36,20 +42,28 @@ public class InventoryService {
             throw new IllegalArgumentException("Invalid Entry Date!");
 
         Inventory newEntry = Inventory.builder()
-                .salePrice(request.salePrice())
-                .supplier(request.supplier().id == -1 ? null : request.supplier())
                 .batch(request.batch())
                 .warehouse(request.warehouse())
                 .item(itemService.findById(request.itemId()))
                 .inventoryType(request.inventoryType())
-                .unit(unitService.findById(request.unitId()))
                 .quantity(request.quantity())
                 .costPrice(request.costPrice())
                 .entryDate(request.entryDate())
                 .build();
 
+        newEntry.setCreatedBy(userContext.getCurrentUsername());
+        newEntry.setModifiedBy(userContext.getCurrentUsername());
+
+        if (Objects.nonNull(request.supplier()) && request.supplier().id != null && request.supplier().id != -1) {
+            newEntry.setSupplier(request.supplier());
+        } else {
+            newEntry.setSupplier(supplierService.getDummySupplier());
+        }
+
+        System.out.println(newEntry);
         newEntry.persistAndFlush();
         itemService.updateQuantity(newEntry);
+        itemService.updateCosts(newEntry, request.retailPrice(), request.salePrice());
 
         //we only create alerts if the entry is to remove from the inventory
         if (request.quantity() < 0)
