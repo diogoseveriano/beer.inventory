@@ -6,6 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import model.Inventory;
+import model.ItemVariant;
 import records.InventoryManualRequest;
 
 import java.util.Comparator;
@@ -41,6 +42,8 @@ public class InventoryService {
         if (Objects.isNull(request.entryDate()))
             throw new IllegalArgumentException("Invalid Entry Date!");
 
+        ItemVariant variant = ItemVariant.findById(request.itemVariantId());
+
         Inventory newEntry = Inventory.builder()
                 .batch(request.batch())
                 .warehouse(request.warehouse())
@@ -49,6 +52,7 @@ public class InventoryService {
                 .quantity(request.quantity())
                 .costPrice(request.costPrice())
                 .entryDate(request.entryDate())
+                .variant(itemService.findVariantById(request.itemVariantId()))
                 .build();
 
         newEntry.setCreatedBy(userContext.getCurrentUsername());
@@ -60,15 +64,14 @@ public class InventoryService {
             newEntry.setSupplier(supplierService.getDummySupplier());
         }
 
-        System.out.println(newEntry);
         newEntry.persistAndFlush();
-        itemService.updateQuantity(newEntry);
-        itemService.updateCosts(newEntry, request.retailPrice(), request.salePrice());
+        itemService.updateQuantity(newEntry, request.itemVariantId());
+        itemService.updateCosts(newEntry, request.itemVariantId(), request.retailPrice(), request.salePrice());
 
         //we only create alerts if the entry is to remove from the inventory
         if (request.quantity() < 0)
-            alertService.createLowInventoryAlert(newEntry);
-        else if (newEntry.getItem().getQuantity() >= newEntry.getItem().getMinQuantity())
+            alertService.createLowInventoryAlert(newEntry, request.itemVariantId());
+        else if (variant.getQuantity() >= variant.getMinQuantity())
             alertService.updateAlertToResolved(newEntry.getItem().getCode());
 
         return true;
@@ -79,19 +82,26 @@ public class InventoryService {
         return Inventory.findAll().list();
     }
 
-    public List<Inventory> findInventoryByWarehouse(long warehouse) {
-        List<Inventory> inventoryList = Inventory.find("warehouse = ?1 and inventoryType <> ?2",
-                warehouseService.getWarehouseById(warehouse), InventoryType.FINISHED_PRODUCT).list();
-        return inventoryList.stream()
-                .sorted(Comparator.comparing(Inventory::getEntryDate))
-                .collect(Collectors.toList());
+    public List<Inventory> findInventoryByWarehouse(String warehouse) {
+        if ("ALL".equals(warehouse)) {
+            return Inventory.find("inventoryType <> ?1", InventoryType.FINISHED_PRODUCT).list();
+        } else {
+            return Inventory.find("warehouse = ?1 and inventoryType <> ?2",
+                    warehouseService.getWarehouseById(Long.parseLong(warehouse)), InventoryType.FINISHED_PRODUCT).list();
+        }
     }
 
+    public List<Inventory> findStockByWarehouse(String warehouse) {
+        if ("ALL".equals(warehouse)) {
+            return Inventory.find("inventoryType = ?1", InventoryType.FINISHED_PRODUCT).list();
+        } else {
+            return Inventory.find("warehouse = ?1 and inventoryType = ?2",
+                    warehouseService.getWarehouseById(Long.parseLong(warehouse)), InventoryType.FINISHED_PRODUCT).list();
+        }
+    }
 
-
-    public List<Inventory> findStockByWarehouse(long warehouse) {
-        return Inventory.find("warehouse = ?1 and inventoryType = ?2",
-                warehouseService.getWarehouseById(warehouse), InventoryType.FINISHED_PRODUCT).list();
+    public Inventory findInventoryOrStockById(long id) {
+        return Inventory.findById(id);
     }
 
 }

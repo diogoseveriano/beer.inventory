@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+//TODO - REFINE THIS BY WAREHOUSE
+
 @ApplicationScoped
 public class AggregatorService {
 
@@ -30,7 +32,7 @@ public class AggregatorService {
     @Inject
     private AlertService alertService;
 
-    public List<StatisticCard> getStatisticsForInventoryPage() {
+    public List<StatisticCard> getStatisticsForInventoryPage(String warehouse) {
         return List.of(
                 createStatisticCard("Inventory Entries", getTotalNumberOfItems(), "ri-box-1-fill", "primary", false),
                 createStatisticCard("Purchase Orders (Pendind Delivery)", getTotalNumberOfPurchaseOrdersPendingDelivery(), "ri-ship-2-line", "info", false),
@@ -40,7 +42,7 @@ public class AggregatorService {
         );
     }
 
-    public List<StatisticCard> getStatisticsForStockPage() {
+    public List<StatisticCard> getStatisticsForStockPage(String warehouse) {
         return List.of(
           createStatisticCard("Stock Entries", getTotalNumberOfFinishedProducts(), "ri-beer-line", "success", false),
           createStatisticCard("Stock Price", getStockPrice(), "ri-money-euro-circle-line", "info", true),
@@ -196,7 +198,7 @@ public class AggregatorService {
     }
 
     private String getPotentialProfit() {
-        if (warehouseService.getDefaultWarehouse().isPresent()) {
+        /*if (warehouseService.getDefaultWarehouse().isPresent()) {
             BigDecimal amount = inventoryService.findAll().stream()
                     .filter(inventory -> inventory.getInventoryType().equals(InventoryType.FINISHED_PRODUCT) &&
                             inventory.getItem().getSalePrice() != null)
@@ -205,21 +207,21 @@ public class AggregatorService {
                             .setScale(2, RoundingMode.HALF_UP))
                     .reduce(BigDecimal.ZERO, BigDecimal::add)
                     .setScale(2, RoundingMode.HALF_UP);
-            return amount.compareTo(BigDecimal.ZERO) <= 0 ? "0.00" : amount.toString();
-        }
+            return amount.compareTo(BigDecimal.ZERO) <= 0 ? "0.00" : amount.toString()*/
+       // }
 
         return "0.00";
     }
 
     private String getTotalWeightOfCereal() {
-        if (warehouseService.getDefaultWarehouse().isPresent()) {
+        /*if (warehouseService.getDefaultWarehouse().isPresent()) {
             return "" + itemService.findAllInventory().stream()
                     .filter(item -> item.getItemType().equals(ItemType.INVENTORY)
                         && item.getCategory().getName().equals("Cereal"))
                     .map(item -> BigDecimal.valueOf(item.getQuantity()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add)
                     .setScale(2, RoundingMode.HALF_UP) + " KG";
-        }
+        }*/
 
         return "0";
     }

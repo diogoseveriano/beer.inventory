@@ -33,7 +33,7 @@ public class InventoryController {
     @Path("{warehouse}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
-    public Response getInventory(@PathParam("warehouse") long warehouse) {
+    public Response getInventory(@PathParam("warehouse") String warehouse) {
         return Response.ok(inventoryService.findInventoryByWarehouse(warehouse)).build();
     }
 
