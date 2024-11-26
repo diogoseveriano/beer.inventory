@@ -27,4 +27,6 @@ public class Unit extends AuditEntity implements Serializable {
 
     private String name;
 
+    private String plural;
+
 }

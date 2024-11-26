@@ -9,10 +9,8 @@ import model.Inventory;
 import model.ItemVariant;
 import records.InventoryManualRequest;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /// TODO :: CONTROLAR ENTRADAS E SAIDA DE PRODUTO ACABADO COM BATCH
 
@@ -21,9 +19,6 @@ public class InventoryService {
 
     @Inject
     ItemService itemService;
-
-    @Inject
-    UnitService unitService;
 
     @Inject
     WarehouseService warehouseService;
@@ -77,12 +72,8 @@ public class InventoryService {
         return true;
     }
 
-    //REMOVE
-    public List<Inventory> findAll() {
-        return Inventory.findAll().list();
-    }
-
     public List<Inventory> findInventoryByWarehouse(String warehouse) {
+        warehouse = warehouse.trim();
         if ("ALL".equals(warehouse)) {
             return Inventory.find("inventoryType <> ?1", InventoryType.FINISHED_PRODUCT).list();
         } else {
@@ -92,6 +83,7 @@ public class InventoryService {
     }
 
     public List<Inventory> findStockByWarehouse(String warehouse) {
+        warehouse = warehouse.trim();
         if ("ALL".equals(warehouse)) {
             return Inventory.find("inventoryType = ?1", InventoryType.FINISHED_PRODUCT).list();
         } else {

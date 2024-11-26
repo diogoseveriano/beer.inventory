@@ -33,4 +33,12 @@ public class AggregatorController {
         return Response.ok(aggregatorService.getStatisticsForStockPage(warehouse)).build();
     }
 
+    @GET
+    @Path("/variants/stock")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
+    public Response getGroupedVariants(@PathParam("warehouse") String warehouse) {
+        return Response.ok(aggregatorService.getGroupedVariantStock(warehouse)).build();
+    }
+
 }

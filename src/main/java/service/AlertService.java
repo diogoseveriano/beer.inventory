@@ -35,8 +35,8 @@ public class AlertService {
     @Transactional
     public void createLowInventoryAlert(Inventory inventory, Integer variantId) {
         ItemVariant variant = ItemVariant.findById(variantId);
-        Optional<Alert> existingAlert = Alert.find("code = ?1 and isResolved = false",
-                variant.getCode()).firstResultOptional();
+        Optional<Alert> existingAlert = Alert.find("itemVariant = ?1 and isResolved = false",
+                variant).firstResultOptional();
 
         if (existingAlert.isEmpty()
                 && variant.isAlertLowStock()
@@ -44,7 +44,7 @@ public class AlertService {
             Alert.builder()
                     .title(AlertTitle.LOW_STOCK)
                     .action(AlertAction.BUY)
-                    .code(variant.getCode())
+                    .itemVariant(variant)
                     .warehouse(inventory.getWarehouse())
                     .alertType(inventory.getItem().getItemType().equals(ItemType.INVENTORY) ? AlertType.INVENTORY : AlertType.STOCK)
                     .content(String.format("Existing Quantity: %s - Minimum Quantity Set: %s",
