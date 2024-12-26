@@ -6,10 +6,11 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "code"))
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -27,14 +28,16 @@ public class Item extends AuditEntity implements Serializable {
 
     private String name;
 
+    @JoinColumn(name = "category_id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     //e.g. Cereal, Beer, Keg, etc.
     private ItemCategory category;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ItemVariant> variants;
 
-    @Column(name = "item_type")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "item_type", nullable = false )
     private ItemType itemType;
 
     private String brand;
@@ -43,6 +46,13 @@ public class Item extends AuditEntity implements Serializable {
 
     private String notes;
 
+    private Timestamp deprecatedAt;
+
     private boolean deprecated = false;
+
+    @Transient
+    public boolean isDeprecated() {
+        return deprecated;
+    }
 
 }

@@ -46,7 +46,7 @@ public class AlertService {
                     .action(AlertAction.BUY)
                     .itemVariant(variant)
                     .warehouse(inventory.getWarehouse())
-                    .alertType(inventory.getItem().getItemType().equals(ItemType.INVENTORY) ? AlertType.INVENTORY : AlertType.STOCK)
+                    .alertType(inventory.getItem().getItemType().equals(ItemType.RAW_MATERIAL) ? AlertType.RAW_MATERIAL : AlertType.STOCK)
                     .content(String.format("Existing Quantity: %s - Minimum Quantity Set: %s",
                             variant.getQuantity(), variant.getMinQuantity()))
                     .isResolved(false)

@@ -7,7 +7,7 @@ import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table
@@ -16,8 +16,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@Setter
 public class Inventory extends AuditEntity implements Serializable {
 
     @Serial
@@ -32,34 +30,28 @@ public class Inventory extends AuditEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private ItemVariant variant;
 
+    @Column(nullable = false)
     private String batch;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Supplier supplier;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private InventoryType inventoryType;
 
     @Column(nullable = false)
-    private double quantity = 0.0;
+    private double quantity;
 
     @Column(nullable = false)
     private BigDecimal costPrice = BigDecimal.ZERO;
 
+    @Column(length = 500)
     private String notes;
 
-    @Column(name = "entry_date")
-    private Date entryDate;
+    @Column(name = "entry_date", nullable = false)
+    private LocalDate entryDate;
 
-    // TODO PENSAR BEM NESTA TEMATICA DA VALIDADE, PORQUE SE EXPIRA DEVERIAMOS ALERTAR, PENSAR COMO!!!
-    private Date expirationDate;
-
-    @Override
-    public void setCreatedBy(String createdBy) {
-        super.setCreatedBy(createdBy);
-    }
-
-    @Override
-    public void setModifiedBy(String modifiedBy) {
-        super.setModifiedBy(modifiedBy);
-    }
+    @Column(name = "expiration_date")
+    private LocalDate expirationDate;
 }

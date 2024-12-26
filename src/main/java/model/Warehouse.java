@@ -22,6 +22,7 @@ public class Warehouse extends AuditEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
     private String address;

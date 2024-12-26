@@ -1,6 +1,6 @@
 package enums;
 
 public enum ItemType {
-    INVENTORY,
+    RAW_MATERIAL,
     STOCK
 }

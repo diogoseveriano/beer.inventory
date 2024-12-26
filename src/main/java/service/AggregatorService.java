@@ -69,7 +69,7 @@ public class AggregatorService {
 
                     String unit = inventories.stream()
                             .map(inventory -> inventory.getVariant().getUnit())
-                            .map(Unit::getPlural)
+                            .map(Unit::getName)
                             .findFirst()
                             .orElse("UNK");
 

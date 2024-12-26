@@ -10,7 +10,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import records.ItemCategoryRecord;
 import service.ItemCategoryService;
 
-@Path(value = "api/item-categories")
+@Path(value = "api/categories")
 public class ItemCategoryController {
 
     @Inject

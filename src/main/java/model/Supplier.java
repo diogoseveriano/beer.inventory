@@ -3,6 +3,7 @@ package model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.io.Serial;
@@ -31,7 +32,6 @@ public class Supplier extends AuditEntity implements Serializable {
     @Column(length = 100)
     private String shortDescription;
 
-    @Column(nullable = false, unique = true)
     private Long nif = 999999999L;
 
     private String address;
@@ -46,6 +46,7 @@ public class Supplier extends AuditEntity implements Serializable {
     @Column(nullable = false)
     private String currency = "EUR";
 
+    @Email
     private String email;
 
     private String phone;

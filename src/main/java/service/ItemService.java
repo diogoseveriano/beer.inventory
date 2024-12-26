@@ -58,7 +58,7 @@ public class ItemService {
     }
 
     public List<Item> findAllInventory() {
-        return Item.find("itemType", ItemType.INVENTORY).list();
+        return Item.find("itemType", ItemType.RAW_MATERIAL).list();
     }
 
     public List<Item> findAllStock() {

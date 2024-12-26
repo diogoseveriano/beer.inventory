@@ -1,39 +1,37 @@
 package model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "bis_user")
+@Table(name = "users")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@EqualsAndHashCode(callSuper = true)
 @Builder
 public class User extends AuditEntity implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
     private String firstName;
 
+    @Column
     private String lastName;
 
     @Column(nullable = false)
     private String roles;
 
     @Column(unique = true, nullable = false)
+    @Email
     private String email;
 
+    @Column
     private String password;
 
-    private boolean isActive;
+    @Column(name = "is_active", nullable = false)
+    private boolean active;
+
 }

@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@Table
+@Table(indexes = @Index(name = "idx_itemvariant_code", columnList = "code"))
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class ItemVariant extends AuditEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String code;
 
     private String name;
