@@ -23,7 +23,7 @@ public class PurchaseOrderItem extends AuditEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ManyToOne
-    private Item item;
+    private ItemVariant itemVariant;
 
     @Column(nullable = false)
     private double quantity;

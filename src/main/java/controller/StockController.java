@@ -8,18 +8,24 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import service.InventoryService;
 
-@Path(value = "api/stock")
+@Path(value = "api/stock/{warehouse}")
 public class StockController {
 
     @Inject
     InventoryService inventoryService;
 
     @GET
-    @Path("{warehouse}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
-    public Response getStock(@PathParam("warehouse") long warehouse) {
+    public Response getStock(@PathParam("warehouse") String warehouse) {
         return Response.ok(inventoryService.findStockByWarehouse(warehouse)).build();
     }
 
+    @GET
+    @Path("/id/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({Role.ROLE_ADMIN, Role.ROLE_GENERIC, Role.ROLE_READ_ONLY})
+    public Response getStockEntry(@PathParam("warehouse") String warehouse, @PathParam("id") long id) {
+        return Response.ok(inventoryService.findInventoryOrStockById(id)).build();
+    }
 }

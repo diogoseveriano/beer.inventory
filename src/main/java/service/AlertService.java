@@ -6,10 +6,7 @@ import enums.alerts.AlertTitle;
 import enums.alerts.AlertType;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
-import model.Alert;
-import model.Inventory;
-import model.Item;
-import model.Warehouse;
+import model.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,29 +33,29 @@ public class AlertService {
      * @param inventory
      */
     @Transactional
-    public void createLowInventoryAlert(Inventory inventory) {
-        Item item = inventory.getItem();
-        Optional<Alert> existingAlert = Alert.find("code = ?1 and isResolved = false",
-                item.getCode()).firstResultOptional();
+    public void createLowInventoryAlert(Inventory inventory, Integer variantId) {
+        ItemVariant variant = ItemVariant.findById(variantId);
+        Optional<Alert> existingAlert = Alert.find("itemVariant = ?1 and isResolved = false",
+                variant).firstResultOptional();
 
         if (existingAlert.isEmpty()
-                && item.isAlertLowStock()
-                && item.getQuantity() < item.getMinQuantity()) {
+                && variant.isAlertLowStock()
+                && variant.getQuantity() < variant.getMinQuantity()) {
             Alert.builder()
                     .title(AlertTitle.LOW_STOCK)
                     .action(AlertAction.BUY)
-                    .code(item.getCode())
+                    .itemVariant(variant)
                     .warehouse(inventory.getWarehouse())
-                    .alertType(item.getItemType().equals(ItemType.INVENTORY) ? AlertType.INVENTORY : AlertType.STOCK)
+                    .alertType(inventory.getItem().getItemType().equals(ItemType.INVENTORY) ? AlertType.INVENTORY : AlertType.STOCK)
                     .content(String.format("Existing Quantity: %s - Minimum Quantity Set: %s",
-                            item.getQuantity(), item.getMinQuantity()))
+                            variant.getQuantity(), variant.getMinQuantity()))
                     .isResolved(false)
                     .build().persistAndFlush();
         }
 
         if (existingAlert.isPresent()) {
             existingAlert.get().setContent(String.format("Existing Quantity: %s - Minimum Quantity Set: %s",
-                    item.getQuantity(), item.getMinQuantity()));
+                    variant.getQuantity(), variant.getMinQuantity()));
             existingAlert.get().persistAndFlush();
         }
     }

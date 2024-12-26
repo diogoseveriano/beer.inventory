@@ -26,7 +26,7 @@ public class Alert extends AuditEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private String code;
+    private ItemVariant itemVariant;
 
     private AlertTitle title;
 

@@ -29,6 +29,9 @@ public class Inventory extends AuditEntity implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Item item;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ItemVariant variant;
+
     private String batch;
 
     @ManyToOne(fetch = FetchType.LAZY)
